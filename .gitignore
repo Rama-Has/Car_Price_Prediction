@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+Appropriate_Files.txt
+EDA_Draft.ipynb                     
+notebooks
+api.py
+functions.ipynb 
+test.ipynb

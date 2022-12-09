@@ -128,9 +128,12 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-Appropriate_Files.txt
-EDA_Draft.ipynb                     
-notebooks
-api.py
-functions.ipynb 
-test.ipynb
+Appropriate_Files.txt 
+api.py 
+transformer
+models
+functions.ipynb
+EDA_Draft.ipynb  
+EDA_Copy.ipynb  
+EDA.ipynb  
+

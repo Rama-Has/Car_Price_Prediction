@@ -1,37 +1,17 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI 
 import pickle
 import pandas as pd
 from http import HTTPStatus  
-from src.data  import CarFeatures
+from src.data_handler  import CarFeatures
+from src.data_handler  import valid_columns_names
 
+#Importing Models
 decision_tree_regressor_model = open('./models/Decision Tree Regressor.pkl', 'rb')
-decision_tree_regressor = pickle.load(decision_tree_regressor_model)  
+decision_tree_regressor = pickle.load(decision_tree_regressor_model) 
+poly2_lasso_model = open('./models/polynomial degree 2 lasso.pkl', 'rb')
+poly2_lasso = pickle.load(poly2_lasso_model)   
 
 app = FastAPI()
-
-
-valid_columns_names = {
-    'model': 'الموديل',
-    'model_year': 'موديل سنة',
-    'color': 'لون السيارة',
-    'motor_power': 'قوة الماتور',
-    "passengers_number":'عدد الركاب',
-    "trip": 'عداد السيارة',
-    "previous_owners":'أصحاب سابقون',
-    "original_type":'أصل السيارة',
-    "license": 'رخصة السيارة',
-    "fuel_type":'نوع الوقود',
-    "gear_type":'نوع الجير',
-    "glass_type":'الزجاج',
-    "airbag": 'وسادة حماية هوائية',
-    "leather_seats":'فرش جلد',
-    "mag_rims":'جنطات مغنيسيوم',
-    "sunroof": 'فتحة سقف',
-    "cd_player":'مسجل CD',
-    "closer": 'إغلاق مركزي',
-    "air_condition": 'مُكيّف',
-    "alarm": "جهاز إنذار"
-} 
 
 @app.get('/_healthh')
 def _health_check():
@@ -41,17 +21,46 @@ def _health_check():
         "status": "work"
     }   
 
-@app.post("/price_prediction")
-def _price_prediction(input_params: CarFeatures):
-    # try:
-    #input_data = list(vars(input_params).values())[0:-1] #converting the json input to dictionary then conver its values to a list 
-    data = [vars(input_params)]
-    input_data = pd.DataFrame(data) 
-    input_data.rename(columns=valid_columns_names, inplace=True)
-    predection = decision_tree_regressor.predict(input_data) 
+@app.post("/price_prediction_tree")
+def _price_prediction(car_features: CarFeatures):
+    """
+    return the predicted price using decision tree regressor
+    """
+    #get a list of a dictionary 
+    car_features_values = [vars(car_features)]
+    #convert the list to a df so it can be passed to the model
+    car_data = pd.DataFrame(car_features_values) 
+    #rename columns as the original dataset 
+    car_data.rename(columns=valid_columns_names, inplace=True)
+    #predict the price using decision tree regressor
+    predection = decision_tree_regressor.predict(car_data)
+    #return the predicted value 
     response = {
         "message": HTTPStatus.OK.phrase,
         "status-code": HTTPStatus.OK,
         "predicted_value": predection[0]    
         } 
     return response
+
+@app.post("/price_prediction")
+def _price_prediction(car_features: CarFeatures):
+    """
+    return the predicted price using lasso with polynomial regression with degree of 2
+    """
+    #get a list of a dictionary 
+    car_features_values = [vars(car_features)]
+    #convert the list to a df so it can be passed to the model
+    car_data = pd.DataFrame(car_features_values) 
+    #rename columns as the original dataset 
+    car_data.rename(columns=valid_columns_names, inplace=True)
+    #predict the price using lasso with polynomial regression with degree of 2
+    predection = poly2_lasso.predict(car_data)
+    #return the predicted value  
+    response = {
+        "message": HTTPStatus.OK.phrase,
+        "status-code": HTTPStatus.OK,
+        "predicted_value": predection[0]    
+        } 
+    return response
+
+

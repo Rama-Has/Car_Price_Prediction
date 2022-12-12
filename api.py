@@ -1,4 +1,4 @@
-from fastapi import FastAPI 
+from fastapi import FastAPI  
 import pickle
 import pandas as pd
 from http import HTTPStatus  
@@ -6,7 +6,7 @@ from src.data_handler  import CarFeatures
 from src.data_handler  import valid_columns_names
 
 #Importing Models
-decision_tree_regressor_model = open('./models/Decision Tree Regressor.pkl', 'rb')
+decision_tree_regressor_model = open('./models/decision tree regressor.pkl', 'rb')
 decision_tree_regressor = pickle.load(decision_tree_regressor_model) 
 poly2_lasso_model = open('./models/polynomial degree 2 lasso.pkl', 'rb')
 poly2_lasso = pickle.load(poly2_lasso_model)   

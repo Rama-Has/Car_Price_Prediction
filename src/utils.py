@@ -46,9 +46,6 @@ def previous_owners(text):
         else:
             return np.nan
 
-
-
-
 def convert_text_to_number(text):
     """
     function that handle inconsistant data in 'عداد السيارة' column and convert text to float 
@@ -82,10 +79,6 @@ def convert_text_to_number(text):
         else: 
             return np.nan  
 
-
-
-
-
 def passengers_number(value):
     """  
     function that convert the text in form '1 + 1' to a numaric value which will be valid
@@ -112,8 +105,6 @@ def passengers_number(value):
         except:
             return np.nan
 
-
-
 def get_model_scores(models, transformed_X, y):
     """
     a function to go over allmodels and get a list of scores for each 
@@ -139,8 +130,6 @@ def get_model_scores(models, transformed_X, y):
         
     # return the new dictionary
     return models
-
-
 
 def outlier_detector(df, column_name, extreme):
     """

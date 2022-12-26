@@ -2,8 +2,7 @@ from fastapi import FastAPI
 import pickle
 import pandas as pd
 from http import HTTPStatus  
-from src.data_handler  import CarFeatures
-from src.data_handler  import valid_columns_names
+from src.data_handler  import CarFeatures, valid_columns_names   
 
 #Importing Models
 decision_tree_regressor_model = open('./models/decision tree regressor.pkl', 'rb')

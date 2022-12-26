@@ -13,7 +13,7 @@ poly2_lasso = pickle.load(poly2_lasso_model)
 
 app = FastAPI()
 
-@app.get('/_healthh')
+@app.get('/_health')
 def _health_check():
     return{
         "message": HTTPStatus.OK.phrase,
@@ -61,6 +61,4 @@ def _price_prediction(car_features: CarFeatures):
         "status-code": HTTPStatus.OK,
         "predicted_value": predection[0]    
         } 
-    return response
-
-
+    return response 

@@ -129,8 +129,6 @@ dmypy.json
 .pyre/
 
 Appropriate_Files.txt  
-EDA_Copy.ipynb
-EDA_Draft.ipynb
-functions.ipynb
-Transformer
+EDA_Copy.ipynb 
+Car_Price_Prediction.ipynb  
 

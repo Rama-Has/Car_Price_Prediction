@@ -5,7 +5,7 @@ from http import HTTPStatus
 from src.data_handler  import CarFeatures
 from src.data_handler  import valid_columns_names
 
-#Importing Models
+#importing the model
 gbt_regressor_pipline = open('./models/gbt pipline.pkl', 'rb')
 gbt_regressor = pickle.load(gbt_regressor_pipline)  
 

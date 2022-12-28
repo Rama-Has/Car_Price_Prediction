@@ -19,7 +19,7 @@ def _health_check():
     }   
 
 @app.post("/price_prediction_gbt")
-def _price_prediction(car_features: CarFeatures):
+def _car_price_prediction(car_features: CarFeatures):
     """
     return the predicted price using gradient boosting tree regressor
     """

@@ -2,8 +2,7 @@ from fastapi import FastAPI
 import pickle
 import pandas as pd
 from http import HTTPStatus  
-from src.data_handler  import CarFeatures
-from src.data_handler  import valid_columns_names
+from src.data_handler  import CarFeatures, valid_columns_names
 
 #importing the model
 gbt_regressor_pipeline = open('./models/gbt pipline.pkl', 'rb')

@@ -29,7 +29,7 @@ def _car_price_prediction(car_features: CarFeatures):
     car_data = pd.DataFrame(car_features_values) 
     #rename columns as the original dataset 
     car_data.rename(columns = valid_columns_names, inplace=True)
-    #predict the price using decision tree regressor
+    #predict the price
     predection = gbt_regressor.predict(car_data)
     #return the predicted price 
     response = {

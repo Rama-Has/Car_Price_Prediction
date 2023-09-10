@@ -66,6 +66,7 @@ def get_value(file_number, feature, class_name):
                         value = match.split(feature)[1] 
     return value 
 
+
 def outlier_detector_zscore(df, column_name):
     """
     a function to detect outliers using z-score method
@@ -82,6 +83,7 @@ def outlier_detector_zscore(df, column_name):
     bool_series = (df[column_name] > upper_limit) | (df[column_name] < lower_limit)
     return bool_series
  
+
 def outlier_detector(df, column_name, extreme):
     """
     a function to detecct the outliers exists in a given data
@@ -105,7 +107,8 @@ def outlier_detector(df, column_name, extreme):
     #check if the value lies outside the lower and upper limit then set it to True otherwise set it to False
     bool_series = (df[column_name] < lower_limit) | (df[column_name] > upper_limit) 
     return bool_series
-        
+
+
 def get_model_scores(models, transformed_X, y):
     """
     a function to go over allmodels and get a list of scores for each 
@@ -132,6 +135,68 @@ def get_model_scores(models, transformed_X, y):
         
     # return the new dictionary
     return models
+
+
+def convert_text_to_number(text):
+    """
+    function that handle inconsistant data in 'عداد السيارة' column and convert text to float 
+    type 
+    input:      
+        text (str): value of cell 
+    output: 
+        value (float): nan if the text is meaningless and a valid number 
+    """
+    try:
+        value = float(text)
+        return value
+    except ValueError:
+        #check if the text contains الف، الاف so return integers with the text multiplied by 1000
+        if re.search(r'ألف|الف|الاف', text):
+            numbers = re.findall(r'\d+', text)
+            if len(numbers) == 0:
+                return 1000
+            else:
+                value = re.findall(r'\d+', text)[0]
+                value = float(value) * 1000
+                return value
+        #check if the text contains km... then retrun the value as it is since the unit of this feature is km
+        elif re.search(r'كيلو|كم|km|KM|Km|kM', text):
+            numbers = re.findall(r'\d+', text)
+            if len(numbers) == 0: 
+                return 0
+            else:
+                value = float(numbers[0])
+            return value
+        else: 
+            return np.nan  
+ 
+ 
+def passengers_number(value):
+    """
+    function that convert the text in form '1 + 1' to a numaric value which will be valid
+    to pass in the model
+    input:      
+        text (str): value of cell which represent the passegers number in a particular car
+    output: 
+        value (int): 
+    """
+    try:
+        #try handling values of 1 and "اكثر من 10"
+        if(value == '1 '): 
+            return 1
+        elif(value == 'اكثر من 10 '): 
+            return 11 
+        else: 
+            #handle the equations
+            numbers_list = value.split('+') 
+            return int(numbers_list[0]) + int(numbers_list[1])
+    except:
+        try:
+            value = int(value)
+            return value
+        except:
+            return np.nan
+
 
 def previous_owners(text):
     """
@@ -174,62 +239,3 @@ def previous_owners(text):
         else:
             return np.nan
  
-def convert_text_to_number(text):
-    """
-    function that handle inconsistant data in 'عداد السيارة' column and convert text to float 
-    type 
-    input:      
-        text (str): value of cell 
-    output: 
-        value (float): nan if the text is meaningless and a valid number 
-    """
-    try:
-        value = float(text)
-        return value
-    except ValueError:
-        #check if the text contains الف، الاف so return integers with the text multiplied by 1000
-        if re.search(r'ألف|الف|الاف', text):
-            numbers = re.findall(r'\d+', text)
-            if len(numbers) == 0:
-                return 1000
-            else:
-                value = re.findall(r'\d+', text)[0]
-                value = float(value) * 1000
-                return value
-        #check if the text contains km... then retrun the value as it is since the unit of this feature is km
-        elif re.search(r'كيلو|كم|km|KM|Km|kM', text):
-            numbers = re.findall(r'\d+', text)
-            if len(numbers) == 0: 
-                return 0
-            else:
-                value = float(numbers[0])
-            return value
-        else: 
-            return np.nan  
- 
-def passengers_number(value):
-    """
-    function that convert the text in form '1 + 1' to a numaric value which will be valid
-    to pass in the model
-    input:      
-        text (str): value of cell which represent the passegers number in a particular car
-    output: 
-        value (int): 
-    """
-    try:
-        #try handling values of 1 and "اكثر من 10"
-        if(value == '1 '): 
-            return 1
-        elif(value == 'اكثر من 10 '): 
-            return 11 
-        else: 
-            #handle the equations
-            numbers_list = value.split('+') 
-            return int(numbers_list[0]) + int(numbers_list[1])
-    except:
-        try:
-            value = int(value)
-            return value
-        except:
-            return np.nan
-
